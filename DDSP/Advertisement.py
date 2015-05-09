@@ -1,4 +1,4 @@
-# The Advertisement class contains the data structure of the Advertisement, and methods includes encapsulation, and decapsulation.
+# The Advertisement class contains the data structure of the Advertisement.
 
 import sys
 import struct

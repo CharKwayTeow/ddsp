@@ -2,8 +2,6 @@
 
 import sys
 import struct
-# import socket
-# import fcntl
 import netifaces
 from Header import Header
 from Record import Record
@@ -36,6 +34,7 @@ class Message:
         if dst_ip == None:
             dst_ip = interface[netifaces.AF_INET][0]['broadcast']
 
+        # Get the ip address of the interface
         src_ip = interface[netifaces.AF_INET][0]['addr']
         port = 8096
 
