@@ -1,0 +1,1 @@
+# The ResourceTable class contains the data structure of the ResourceTable class, and methods includes addRecord, deleteRecord, clear, toBytes.
