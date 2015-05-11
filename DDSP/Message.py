@@ -14,9 +14,11 @@ class Message:
 
     def addRecord(self, fid):
         records.append(fid)
+        self.header.length += 1
 
     def removeRecord(self, fid):
         records.remove(fid)
+        self.header.length -= 1
 
     def initializeRecord(self):
         records = []

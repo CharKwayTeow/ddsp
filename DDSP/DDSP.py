@@ -11,7 +11,7 @@ class DDSP:
         # initialization
         self.data_directory = data_directory
         self.port = port
-        
+
         run()
 
     def run(self):
@@ -25,3 +25,7 @@ class DDSP:
 
     def requestContent(self, fid):
         pass
+
+"""Write the test code here"""
+if __name__ == '__main__':
+    print "DDSP class should work if you see this"
