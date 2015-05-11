@@ -7,8 +7,11 @@ from Record import Record
 
 class DDSP:
     """docstring for DDSP"""
-    def __init__(self):
+    def __init__(self, data_directory = 'data', port = 8192):
         # initialization
+        self.data_directory = data_directory
+        self.port = port
+        
         run()
 
     def run(self):

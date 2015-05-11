@@ -11,9 +11,9 @@ class Header:
         self.length = 0
         self.port = 0
 
-    """Only use for ACK message"""
-    def generatePortNum(self):
-        self.port = random.randint(8097, 65535)
+    # """Only use for ACK message"""
+    # def generatePortNum(self):
+    #     self.port = random.randint(8192, 65535)
 
     def encapsulation(self):
         return struct.pack("!BHH", self.type, self.length, self.port)
@@ -27,7 +27,7 @@ class Header:
 """Write the test code here"""
 if __name__ == '__main__':
     header = Header(MessageType.query)
-    header.generatePortNum()
+    # header.generatePortNum()
     print str(header.port)
     header.length = 1
     header.decapsulation(header.encapsulation())
