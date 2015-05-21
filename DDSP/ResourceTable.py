@@ -4,15 +4,23 @@ import sys
 import struct
 from Header import Header
 from Record import Record
+import time, threading
 
 class ResourceTable:
     """docstring for ResourceTable"""
     def __init__(self):
         # initialization
+        self.records = []
         run()
 
     def run():
-        pass
+        threading.Timer(1, run).start()
+
+        for record in self.records:
+            if record.ip_addr != '127.0.0.1':
+                record.ttl -= 1
+                if record.ttl == 0:
+                    remove(record)
 
     def add(self, record):
         pass
@@ -21,7 +29,7 @@ class ResourceTable:
         pass
 
     def clear(self):
-        pass
+        self.records = []
 
 """Write the test code here"""
 if __name__ == '__main__':

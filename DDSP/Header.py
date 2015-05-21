@@ -1,4 +1,4 @@
-# The Header class contains the data structure of the Header class, and methods includes encapsulation, and decapsulation.
+# The Header class contains the data structure of the Header class, and methods includes encapsulate, and decapsulate.
 
 import struct
 import random
@@ -11,10 +11,10 @@ class Header:
         self.length = 0
         self.port = 0
 
-    def encapsulation(self):
+    def encapsulate(self):
         return struct.pack("!BHH", self.type, self.length, self.port)
 
-    def decapsulation(self, data):
+    def decapsulate(self, data):
         header = struct.unpack("!BHH", data)
         self.type = header[0]
         self.length = header[1]
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     header = Header(MessageType.query)
     print str(header.port)
     header.length = 1
-    header.decapsulation(header.encapsulation())
+    header.decapsulate(header.encapsulate())
     print header.type
     print header.length
     print header.port

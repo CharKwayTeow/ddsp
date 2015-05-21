@@ -1,4 +1,4 @@
-# The Message class contains the data structure of the Message, and methods includes encapsulation, and decapsulation.
+# The Message class contains the data structure of the Message, and methods includes encapsulate, and decapsulate.
 
 import sys
 import struct
@@ -23,10 +23,10 @@ class Message:
     def initializeRecord(self):
         records = []
 
-    def encapsulation(self):
+    def encapsulate(self):
         pass
 
-    def decapsulation(self, data):
+    def decapsulate(self, data):
         pass
 
     def send(self, dst_ip = None):
@@ -40,7 +40,7 @@ class Message:
         src_ip = interface[netifaces.AF_INET][0]['addr']
         port = 8096
 
-        data = self.encapsulation()
+        data = self.encapsulate()
 
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.settimeout(3)
