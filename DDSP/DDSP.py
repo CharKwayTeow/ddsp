@@ -74,11 +74,13 @@ class DDSP:
                 # setup a data receiver
                 receiver = DataReceiver()
                 # send an ack
-                ack = ACK(receiver.port)
-                ack.addRecord(incomeMessage.records[0])
-                ack.send(ip_addr)
-                # start the receiver
-                receiver.receive(data_directory + "/" + fid)    # a new thread is expected to call this method
+                rc = -1
+                while rc != 0:
+                    ack = ACK(receiver.port)
+                    ack.addRecord(incomeMessage.records[0])
+                    ack.send(ip_addr)
+                    # start the receiver
+                    rc = receiver.receive(data_directory + "/" + fid)    # a new thread is   expected to call this method
 
                 
             elif incomeMessage.header.type == MessageType.ack:

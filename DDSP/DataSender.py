@@ -9,17 +9,19 @@ class DataSender:
 
     def send(path):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((self.ip_addr, self.port))
-        f = open(path, 'rb')
-        while True:
-            data = f.read(4096)
-            if data:
-                s.send(data)
-                f.seek(4096, 1)
-            else:
-                f.close()
-                break
-        s.close()
+        try:
+            s.connect((self.ip_addr, self.port))
+            f = open(path, 'rb')
+            while True:
+                data = f.read(4096)
+                if data:
+                    s.send(data)
+                    f.seek(4096, 1)
+                else:
+                    f.close()
+                    break
+        finally:
+            s.close()
 
 
 """Write the test code here"""
