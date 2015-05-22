@@ -32,7 +32,7 @@ class ResourceTable:
     def clear(self):
         self.records = []
 
-    def update(self, fid, status):
+    def updateStatus(self, fid, status):
         for record in self.records:
             if record.fid == fid:
                 record.status = status
