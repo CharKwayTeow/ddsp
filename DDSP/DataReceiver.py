@@ -18,6 +18,7 @@ class DataReceiver:
                 break
             except:
                 # Do nothing here to repick another port
+                pass
 
     def receive(path):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

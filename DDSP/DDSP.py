@@ -5,6 +5,7 @@ import struct
 import socket
 # from Header import Header
 from MessageType import MessageType
+from RecordStatus import RecordStatus
 from Record import Record
 from Message import Message
 from Discovery import Discovery
@@ -15,6 +16,8 @@ from Offer import Offer
 from ACK import ACK
 from NACK import NACK
 from ResourceTable import ResourceTable
+from DataReceiver import DataReceiver
+from DataSender import DataSender
 
 class DDSP:
     """docstring for DDSP"""
@@ -46,7 +49,7 @@ class DDSP:
 
             elif incomeMessage.header.type == MessageType.advertisement:
                 # add a record to resource table
-                record = Record(incomeMessage.records[0], ip_addr, 2)
+                record = Record(incomeMessage.records[0], ip_addr, RecordStatus.on_remote)
                 self.resourceTable.records.append(record)
                 
             elif incomeMessage.header.type == MessageType.withdraw:
@@ -62,16 +65,29 @@ class DDSP:
                 for record in self.resourceTable.records:
                     if record.fid == incomeMessage.records[0]:
                         # send a nack
+                        nack = NACK()
+                        nack.addRecord(incomeMessage.records[0])
+                        nack.send(ip_addr)
                         return
                 # add to resource table
+                resourceTable.add(Record(incomeMessage.records[0], ip_addr, RecordStatus.on_the_wire))
+                # setup a data receiver
+                receiver = DataReceiver()
                 # send an ack
-                # start a data receiver
+                ack = ACK(receiver.port)
+                ack.addRecord(incomeMessage.records[0])
+                ack.send(ip_addr)
+                # start the receiver
+                receiver.receive(data_directory + "/" + fid)    # a new thread is expected to call this method
+
                 
             elif incomeMessage.header.type == MessageType.ack:
                 # transfer data
                 for record in self.resourceTable.records:
                     if record.fid == incomeMessage.records[0]:
                         # establish a connection
+                        sender = DataSender(ip_addr, imcomeMessage.header.port)
+                        sender.send(data_directory + "/" + fid) # a new thread is expected to call this method
                         break
                 
             elif incomeMessage.header.type == MessageType.nack:
