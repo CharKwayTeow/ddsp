@@ -107,13 +107,30 @@ class DDSP:
 
 
     def addContent(self, fid):
-        pass
+        record = Record(fid, '127.0.0.1', RecordStatus.on_the_disk)
+        self.resourceTable.records.append(record)
+        advertisement = Advertisement()
+        advertisement.addRecord(fid)
+        advertisement.send()
 
     def removeContent(self, fid):
-        pass
+        for record in self.resourceTable.records:
+            if record.fid == fid:
+                self.resourceTable.remove(record)
+                withdraw = Withdraw()
+                withdraw.addRecord(fid)
+                withdraw.send()
 
     def requestContent(self, fid):
-        pass
+        for record in self.resourceTable.records:
+            if record.fid == fid:
+                query = Query()
+                query.addRecord(fid)
+                query.send(record.ip_addr)
+                break
+        discovery = Discovery()
+        discovery.addRecord(fid)
+        discovery.send()
 
 """Write the test code here"""
 if __name__ == '__main__':
