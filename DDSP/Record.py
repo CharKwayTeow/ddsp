@@ -9,7 +9,7 @@ class Record:
         self.fid = fid
         self.ip_addr = ip_addr
         self.ttl = 60
-        self.status = status    # status = 0: on the wire, = 1: on the disk
+        self.status = status    # status = 0: on the disk; = 1: on the wire, = 2: on remote
 
     def encapsulate(self):
         pass

@@ -24,33 +24,59 @@ class DDSP:
         self.port = port
         self.resourceTable = ResourceTable()
 
-        run()   # a new thread is expect to call this method
+        run()   # a new thread is expected to call this method
 
     def run(self):
         while True:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.bind(('', port))
-            data, addr = udps.recvfrom(1024)
+            data, ip_addr = udps.recvfrom(1024)
             incomeMessage = Message()
             incomeMessage.decapsulate()
 
             if incomeMessage.header.type == MessageType.discovery or incomeMessage.header.type == MessageType.query:
-                # check the resource table, if find the record, send a offer
-                pass
+                # check the resource table, if find the record, send an offer
+                for record in self.resourceTable.records:
+                    if record.status == 0 and record.fid == incomeMessage.records[0]:
+                        # send an offer
+                        offer = Offer()
+                        offer.addRecord(record.fid)
+                        offer.send(ip_addr)
+                        break
+
             elif incomeMessage.header.type == MessageType.advertisement:
                 # add a record to resource table
-                pass
+                record = Record(incomeMessage.records[0], ip_addr, 2)
+                self.resourceTable.records.append(record)
+                
             elif incomeMessage.header.type == MessageType.withdraw:
                 # delete a record in resource table
-                pass
+                for record in self.resourceTable.records:
+                    if record.fid == incomeMessage.records[0]:
+                        # delete the record
+                        resourceTable.remove(record)
+                        break
+                
             elif incomeMessage.header.type == MessageType.offer:
                 # check the resource table, if not found, send a ack, else, send a nack
-                pass
+                for record in self.resourceTable.records:
+                    if record.fid == incomeMessage.records[0]:
+                        # send a nack
+                        return
+                # add to resource table
+                # send an ack
+                # start a data receiver
+                
             elif incomeMessage.header.type == MessageType.ack:
                 # transfer data
-                pass
+                for record in self.resourceTable.records:
+                    if record.fid == incomeMessage.records[0]:
+                        # establish a connection
+                        break
+                
             elif incomeMessage.header.type == MessageType.nack:
                 pass
+                
             else:
                 pass
 

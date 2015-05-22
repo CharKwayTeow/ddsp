@@ -14,6 +14,7 @@ class ResourceTable:
         run()
 
     def run():
+        # excute once per second
         threading.Timer(1, run).start()
 
         for record in self.records:
