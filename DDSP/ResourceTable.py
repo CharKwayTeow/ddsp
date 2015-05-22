@@ -32,6 +32,11 @@ class ResourceTable:
     def clear(self):
         self.records = []
 
+    def update(self, fid, status):
+        for record in self.records:
+            if record.fid == fid:
+                record.status = status
+
 """Write the test code here"""
 if __name__ == '__main__':
     print "ResourceTable class should work if you see this"
