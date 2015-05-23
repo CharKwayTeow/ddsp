@@ -13,29 +13,29 @@ class Message:
         self.records = []
 
     def addRecord(self, fid):
-        records.append(fid)
+        self.records.append(fid)
         self.header.length += 1
 
     def removeRecord(self, fid):
-        records.remove(fid)
+        self.records.remove(fid)
         self.header.length -= 1
 
     def initializeRecord(self):
-        records = []
+        self.records = []
 
     def encapsulate(self):
-        data = self.header.encapsulate
+        data = self.header.encapsulate()
         for fid in self.records:
-            data += struct.pack("!I", fid)
+            data += struct.pack("!64s", fid)
         return data
 
     def decapsulate(self, data):
-        self.header.decapsulate(data[0:8])
-        initializeRecord()
+        self.header.decapsulate(data[0:6])
+        self.initializeRecord()
         # decapsulate each fid
-        recordsData = data[9:]
-        for i in range(len(recordsData)/4):
-            self.records.append(struct.unpack("!I", recordsData[4*i:4*i+3])[0])
+        recordsData = data[6:]
+        for i in xrange(0, self.header.length):
+            self.records.append(struct.unpack("!64s", recordsData[64*i:64*(i+1)])[0])
 
     def send(self, dst_ip = None):
         interface = netifaces.ifaddresses('eth0')
@@ -57,4 +57,19 @@ class Message:
 
 """Write the test code here"""
 if __name__ == '__main__':
+    message = Message()
+    print message.header.length
+    message.addRecord('123456789012345678901234567890123456789012345678901234567890abcd')
+    print message.header.length
+    message.addRecord('123456789012345678901234567890123456789012345678901234567890efgh')
+    print message.header.length
+    print message.records
+    # message.removeRecord('123456789012345678901234567890123456789012345678901234567890efgh')
+    # print message.header.length
+    # print message.records
+
+    message.decapsulate(message.encapsulate())
+    print message.header.version
+    print message.header.length
+    print message.records
     print "Message class should work if you see this"
