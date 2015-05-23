@@ -24,10 +24,18 @@ class Message:
         records = []
 
     def encapsulate(self):
-        pass
+        data = self.header.encapsulate
+        for fid in self.records:
+            data += struct.pack("!I", fid)
+        return data
 
     def decapsulate(self, data):
-        pass
+        self.header.decapsulate(data[0:8])
+        initializeRecord()
+        # decapsulate each fid
+        recordsData = data[9:]
+        for i in range(len(recordsData)/4):
+            self.records.append(struct.unpack("!I", recordsData[4*i:4*i+3])[0])
 
     def send(self, dst_ip = None):
         interface = netifaces.ifaddresses('eth0')

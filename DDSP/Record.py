@@ -2,6 +2,7 @@
 
 import sys
 import struct
+from RecordStatus import RecordStatus
 
 class Record:
     """docstring for Record"""
@@ -9,14 +10,7 @@ class Record:
         self.fid = fid
         self.ip_addr = ip_addr
         self.ttl = 60
-        self.status = status    # status = 0: on the disk; = 1: on the wire, = 2: on remote
-
-    def encapsulate(self):
-        pass
-
-    def decapsulate(self, data):
-        pass
-
+        self.status = status
 
 """Write the test code here"""
 if __name__ == '__main__':
