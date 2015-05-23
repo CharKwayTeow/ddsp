@@ -24,10 +24,10 @@ class ResourceTable:
                     remove(record)
 
     def add(self, record):
-        pass
+        self.records.append(record)
 
     def remove(self, record):
-        pass
+        self.records.remove(record)
 
     def clear(self):
         self.records = []
