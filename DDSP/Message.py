@@ -3,6 +3,7 @@
 import sys
 import struct
 import netifaces
+from socket import *
 from Header import Header
 from Record import Record
 
@@ -49,7 +50,10 @@ class Message:
 
         data = self.encapsulate()
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s = socket(AF_INET, SOCK_DGRAM)
+        s.bind(('',port))
+        s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+        s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         s.settimeout(3)
         s.sendto(data,(dst_ip, port))
 
@@ -71,4 +75,6 @@ if __name__ == '__main__':
     print message.header.version
     print message.header.length
     print message.records
+    message.send('222.222.222.222', 8096)
+    message.send(None, 8096)
     print "Message class should work if you see this"

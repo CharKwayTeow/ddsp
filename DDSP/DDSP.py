@@ -33,7 +33,7 @@ class DDSP:
     def run(self):
         while True:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.bind(('', port))
+            s.bind(('', self.port))
             data, ip_addr = udps.recvfrom(1024)
             incomeMessage = Message()
             incomeMessage.decapsulate()
