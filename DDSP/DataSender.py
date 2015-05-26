@@ -7,7 +7,7 @@ class DataSender:
         self.port = port
         self.ip_addr = ip_addr
 
-    def send(path):
+    def send(self, path):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             s.connect((self.ip_addr, self.port))
@@ -26,4 +26,6 @@ class DataSender:
 
 """Write the test code here"""
 if __name__ == '__main__':
+    sender = DataSender('169.234.32.145', 11111)
+    sender.send('RecordStatus.py')
     print ("DataSender class should work if you see this")

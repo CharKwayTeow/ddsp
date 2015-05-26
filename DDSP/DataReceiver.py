@@ -1,11 +1,11 @@
 import os
 import socket
+import random
 
 class DataReceiver:
     """docstring for DataReceiver"""
     def __init__(self):
-        selectPort()
-        receive()
+        self.selectPort()
 
     def selectPort(self):
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -20,11 +20,10 @@ class DataReceiver:
                 # Do nothing here to repick another port
                 pass
 
-    def receive(path):
+    def receive(self, path):
         rc = 0
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        host = socket.gethostname()
-        s.bind((host, self.port))
+        s.bind(('', self.port))
         s.settimeout(10)
         try:
             s.listen(1)
@@ -46,4 +45,7 @@ class DataReceiver:
 
 """Write the test code here"""
 if __name__ == '__main__':
+    receiver = DataReceiver()
+    receiver.port = 11111
+    print (receiver.receive('../../received/missfont.log'))
     print ("DataReceiver class should work if you see this")
