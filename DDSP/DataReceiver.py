@@ -38,7 +38,7 @@ class DataReceiver:
                 else:
                     f.close()
                     break
-        except Exception, e:
+        except:
             rc = -1
         finally:
             s.close()
@@ -46,4 +46,4 @@ class DataReceiver:
 
 """Write the test code here"""
 if __name__ == '__main__':
-    print "DataReceiver class should work if you see this"
+    print ("DataReceiver class should work if you see this")

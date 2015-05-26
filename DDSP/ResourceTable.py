@@ -2,26 +2,26 @@
 
 import sys
 import struct
-from Header import Header
-from Record import Record
 import time, threading
+from Record import Record
+from RecordStatus import RecordStatus
 
 class ResourceTable:
     """docstring for ResourceTable"""
     def __init__(self):
         # initialization
         self.records = []
-        run()
+        self.run()
 
-    def run():
+    def run(self):
         # excute once per second
-        threading.Timer(1, run).start()
+        threading.Timer(1, self.run).start()
 
         for record in self.records:
             if record.ip_addr != '127.0.0.1':
                 record.ttl -= 1
                 if record.ttl == 0:
-                    remove(record)
+                    self.remove(record)
 
     def add(self, record):
         self.records.append(record)
@@ -39,4 +39,15 @@ class ResourceTable:
 
 """Write the test code here"""
 if __name__ == '__main__':
-    print "ResourceTable class should work if you see this"
+    resourceTable = ResourceTable()
+    resourceTable.add(Record('123456789012345678901234567890123456789012345678901234567890efgh', '111.10.10.11', 0))
+    print (resourceTable.records[0].ttl)
+    while resourceTable.records[0].ttl != 30:
+        pass
+    print (resourceTable.records[0].ttl)
+    
+    resourceTable.add(Record('123456789012345678901234567890123456789012345678901234567890abcd', '127.0.0.1', 0))
+    while len(resourceTable.records) != 1:
+        pass
+    print (len(resourceTable.records))
+    print ("ResourceTable class should work if you see this")

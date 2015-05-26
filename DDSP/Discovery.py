@@ -15,4 +15,4 @@ class Discovery(Message):
 
 """Write the test code here"""
 if __name__ == '__main__':
-    print "Discovery class should work if you see this"
+    print ("Discovery class should work if you see this")

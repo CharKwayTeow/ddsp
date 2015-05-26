@@ -15,4 +15,4 @@ class Offer(Message):
 
 """Write the test code here"""
 if __name__ == '__main__':
-    print "Offer class should work if you see this"
+    print ("Offer class should work if you see this")

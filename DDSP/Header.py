@@ -25,11 +25,11 @@ class Header:
 """Write the test code here"""
 if __name__ == '__main__':
     header = Header(MessageType.query)
-    print str(header.port)
+    print (header.port)
     header.length = 1
     header.decapsulate(header.encapsulate())
-    print header.version
-    print header.type
-    print header.length
-    print header.port
-    print "Header class should work if you see this"
+    print (header.version)
+    print (header.type)
+    print (header.length)
+    print (header.port)
+    print ("Header class should work if you see this")

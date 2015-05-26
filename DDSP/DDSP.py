@@ -3,7 +3,7 @@
 import sys
 import struct
 import socket
-import thread
+import _thread
 from MessageType import MessageType
 from RecordStatus import RecordStatus
 from Record import Record
@@ -134,4 +134,4 @@ class DDSP:
 
 """Write the test code here"""
 if __name__ == '__main__':
-    print "DDSP class should work if you see this"
+    print ("DDSP class should work if you see this")

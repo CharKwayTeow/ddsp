@@ -61,20 +61,20 @@ class Message:
 """Write the test code here"""
 if __name__ == '__main__':
     message = Message()
-    print message.header.length
+    print (message.header.length)
     message.addRecord('123456789012345678901234567890123456789012345678901234567890abcd')
-    print message.header.length
+    print (message.header.length)
     message.addRecord('123456789012345678901234567890123456789012345678901234567890efgh')
-    print message.header.length
-    print message.records
+    print (message.header.length)
+    print (message.records)
     # message.removeRecord('123456789012345678901234567890123456789012345678901234567890efgh')
-    # print message.header.length
-    # print message.records
+    # print (message.header.length)
+    # print (message.records)
 
     message.decapsulate(message.encapsulate())
-    print message.header.version
-    print message.header.length
-    print message.records
+    print (message.header.version)
+    print (message.header.length)
+    print (message.records)
     message.send('222.222.222.222', 8096)
     message.send(None, 8096)
-    print "Message class should work if you see this"
+    print ("Message class should work if you see this")
