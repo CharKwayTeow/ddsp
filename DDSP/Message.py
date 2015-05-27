@@ -51,10 +51,10 @@ class Message:
         data = self.encapsulate()
 
         s = socket(AF_INET, SOCK_DGRAM)
-        s.bind(('',port))
         s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+        s.bind(('',port))
         s.settimeout(3)
         s.sendto(data,(dst_ip, port))
 
