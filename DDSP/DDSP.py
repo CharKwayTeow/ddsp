@@ -38,6 +38,9 @@ class DDSP:
             data, ip_addr = s.recvfrom(1024)
             incomeMessage = Message()
             incomeMessage.decapsulate(data)
+            print (incomeMessage)
+            print (incomeMessage.header.type)
+            print (incomeMessage.header.length)
 
             # start a new thread to handle message
             _thread.start_new_thread(self.handleMessage, (incomeMessage, ip_addr))
@@ -55,7 +58,7 @@ class DDSP:
 
         elif incomeMessage.header.type == MessageType.advertisement:
             # add a record to resource table
-            record = Record(incomeMessage.records[0], ip_addr, RecordStatus.on_remote)
+            record = Record(incomeMessage.records[0], ip_addr[0], RecordStatus.on_remote)
             self.resourceTable.records.append(record)
             
         elif incomeMessage.header.type == MessageType.withdraw:
