@@ -11,7 +11,7 @@ class ResourceTable:
     def __init__(self):
         # initialization
         self.records = []
-        self.run()
+        # self.run()
 
     def run(self):
         # excute once per second

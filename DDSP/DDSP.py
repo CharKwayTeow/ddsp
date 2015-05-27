@@ -28,18 +28,21 @@ class DDSP:
         self.resourceTable = ResourceTable()
 
         # start a new thread to run the daemon function
-        thread.start_new_thread(run)
+        self.daemon = _thread.start_new_thread(self.run, ())
 
     def run(self):
         while True:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             s.bind(('', self.port))
-            data, ip_addr = udps.recvfrom(1024)
+            data, ip_addr = s.recvfrom(1024)
             incomeMessage = Message()
             incomeMessage.decapsulate()
 
             # start a new thread to handle message
-            thread.start_new_thread(handleMessage, incomeMessage)
+            _thread.start_new_thread(self.handleMessage, incomeMessage)
+
+    def terminate(self):
+        self.daemon.exit()
             
 
     def handleMessage(incomeMessage):

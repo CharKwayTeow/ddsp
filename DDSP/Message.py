@@ -35,7 +35,7 @@ class Message:
         self.initializeRecord()
         # decapsulate each fid
         recordsData = data[6:]
-        for i in xrange(0, self.header.length):
+        for i in range(0, self.header.length):
             self.records.append(struct.unpack("!64s", recordsData[64*i:64*(i+1)])[0])
 
     def send(self, dst_ip = None, port = 8096):
@@ -62,12 +62,12 @@ class Message:
 if __name__ == '__main__':
     message = Message()
     print (message.header.length)
-    message.addRecord('123456789012345678901234567890123456789012345678901234567890abcd')
+    message.addRecord(b'123456789012345678901234567890123456789012345678901234567890abcd')
     print (message.header.length)
-    message.addRecord('123456789012345678901234567890123456789012345678901234567890efgh')
+    message.addRecord(b'123456789012345678901234567890123456789012345678901234567890efgh')
     print (message.header.length)
     print (message.records)
-    # message.removeRecord('123456789012345678901234567890123456789012345678901234567890efgh')
+    # message.removeRecord(b'123456789012345678901234567890123456789012345678901234567890efgh')
     # print (message.header.length)
     # print (message.records)
 
