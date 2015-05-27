@@ -31,19 +31,16 @@ class DDSP:
         self.daemon = _thread.start_new_thread(self.run, ())
 
     def run(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        s.bind(('', self.port))
         while True:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.bind(('', self.port))
             data, ip_addr = s.recvfrom(1024)
             incomeMessage = Message()
-            incomeMessage.decapsulate()
+            incomeMessage.decapsulate(data)
 
             # start a new thread to handle message
             _thread.start_new_thread(self.handleMessage, incomeMessage)
-
-    def terminate(self):
-        self.daemon.exit()
-            
 
     def handleMessage(incomeMessage):
         if incomeMessage.header.type == MessageType.discovery or incomeMessage.header.type == MessageType.query:
@@ -137,4 +134,5 @@ class DDSP:
 
 """Write the test code here"""
 if __name__ == '__main__':
+    ddsp = DDSP()
     print ("DDSP class should work if you see this")
