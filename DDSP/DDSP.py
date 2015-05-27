@@ -76,7 +76,7 @@ class DDSP:
                     nack.send(ip_addr)
                     return
             # update the resource table
-            self.resourceTable.updateStatus(fid, RecordStatus.on_the_wire)
+            self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_wire)
             # setup a data receiver
             receiver = DataReceiver()
             # send an ack
