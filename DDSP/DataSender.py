@@ -5,7 +5,7 @@ class DataSender:
     """docstring for DataSender"""
     def __init__(self, ip_addr, port):
         self.port = port
-        self.ip_addr = ip_addr
+        self.ip_addr = ip_addr[0]
 
     def send(self, path):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

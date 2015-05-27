@@ -85,7 +85,6 @@ class DDSP:
             while rc != 0:
                 # setup a data receiver
                 receiver = DataReceiver()
-                print (receiver.port)
                 # send an ack
                 ack = ACK(receiver.port)
                 ack.addRecord(incomeMessage.records[0])
