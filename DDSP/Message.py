@@ -52,7 +52,6 @@ class Message:
 
         s = socket(AF_INET, SOCK_DGRAM)
         s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         s.bind(('',port))
         s.settimeout(3)

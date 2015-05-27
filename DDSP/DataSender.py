@@ -9,6 +9,7 @@ class DataSender:
 
     def send(self, path):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             s.connect((self.ip_addr, self.port))
             f = open(path, 'rb')

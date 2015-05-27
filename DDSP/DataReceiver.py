@@ -23,6 +23,7 @@ class DataReceiver:
     def receive(self, path):
         rc = 0
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind(('', self.port))
         s.settimeout(10)
         try:
