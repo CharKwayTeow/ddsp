@@ -100,7 +100,7 @@ class DDSP:
             for record in self.resourceTable.records:
                 if record.fid == incomeMessage.records[0]:
                     # establish a connection
-                    sender = DataSender(ip_addr, imcomeMessage.header.port)
+                    sender = DataSender(ip_addr, incomeMessage.header.port)
                     sender.send(self.data_directory + "/" + record.fid.decode(encoding='UTF-8'))
                     break
             
