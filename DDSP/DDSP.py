@@ -40,9 +40,9 @@ class DDSP:
             incomeMessage.decapsulate(data)
 
             # start a new thread to handle message
-            _thread.start_new_thread(self.handleMessage, incomeMessage)
+            _thread.start_new_thread(self.handleMessage, (incomeMessage, ip_addr))
 
-    def handleMessage(incomeMessage):
+    def handleMessage(self, incomeMessage, ip_addr):
         if incomeMessage.header.type == MessageType.discovery or incomeMessage.header.type == MessageType.query:
             # check the resource table, if find the record, send an offer
             for record in self.resourceTable.records:
