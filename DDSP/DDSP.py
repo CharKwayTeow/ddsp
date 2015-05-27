@@ -63,7 +63,7 @@ class DDSP:
             for record in self.resourceTable.records:
                 if record.fid == incomeMessage.records[0]:
                     # delete the record
-                    resourceTable.remove(record)
+                    self.resourceTable.remove(record)
                     break
             
         elif incomeMessage.header.type == MessageType.offer:
@@ -76,7 +76,7 @@ class DDSP:
                     nack.send(ip_addr)
                     return
             # update the resource table
-            resourceTable.updateStatus(fid, RecordStatus.on_the_wire)
+            self.resourceTable.updateStatus(fid, RecordStatus.on_the_wire)
             # setup a data receiver
             receiver = DataReceiver()
             # send an ack
@@ -88,7 +88,7 @@ class DDSP:
                 # start the receiver
                 rc = receiver.receive(self.data_directory + "/" + fid)
             # update resource table
-            resourceTable.updateStatus(fid, RecordStatus.on_the_disk)
+            self.resourceTable.updateStatus(fid, RecordStatus.on_the_disk)
             
         elif incomeMessage.header.type == MessageType.ack:
             # transfer data
