@@ -73,19 +73,20 @@ class DDSP:
         elif incomeMessage.header.type == MessageType.offer:
             # check the resource table, if not found, send a ack, else, send a nack
             for record in self.resourceTable.records:
-                if record.fid == incomeMessage.records[0]:
+                if record.fid == incomeMessage.records[0] and record.status != RecordStatus.on_remote:
                     # send a nack
                     nack = NACK()
                     nack.addRecord(incomeMessage.records[0])
                     nack.send(ip_addr, self.port, self.interface)
-                    return
+                    break
             # update the resource table
             self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_wire)
-            # setup a data receiver
-            receiver = DataReceiver()
-            # send an ack
             rc = -1
             while rc != 0:
+                # setup a data receiver
+                receiver = DataReceiver()
+                print (receiver.port)
+                # send an ack
                 ack = ACK(receiver.port)
                 ack.addRecord(incomeMessage.records[0])
                 ack.send(ip_addr, self.port, self.interface)
@@ -131,7 +132,7 @@ class DDSP:
                 query = Query()
                 query.addRecord(fid)
                 query.send((record.ip_addr, self.port), self.port, self.interface)
-                break
+                return
         discovery = Discovery()
         discovery.addRecord(fid)
         discovery.send(None, self.port, self.interface)
