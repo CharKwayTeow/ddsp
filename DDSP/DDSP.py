@@ -86,9 +86,9 @@ class DDSP:
                 ack.addRecord(incomeMessage.records[0])
                 ack.send(ip_addr)
                 # start the receiver
-                rc = receiver.receive(self.data_directory + "/" + fid)
+                rc = receiver.receive(self.data_directory + "/" + incomeMessage.records[0])
             # update resource table
-            self.resourceTable.updateStatus(fid, RecordStatus.on_the_disk)
+            self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_disk)
             
         elif incomeMessage.header.type == MessageType.ack:
             # transfer data
@@ -96,7 +96,7 @@ class DDSP:
                 if record.fid == incomeMessage.records[0]:
                     # establish a connection
                     sender = DataSender(ip_addr, imcomeMessage.header.port)
-                    sender.send(self.data_directory + "/" + fid)
+                    sender.send(self.data_directory + "/" + record.fid)
                     break
             
         elif incomeMessage.header.type == MessageType.nack:
