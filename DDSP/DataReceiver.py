@@ -9,11 +9,12 @@ class DataReceiver:
 
     def selectPort(self):
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         while True:
             self.port = random.randint(8192, 65535)
             try:
                 # Detect whether the port has been occupied.
-                s.connect(('127.0.0.1', self.port))
+                s.bind(('', self.port))
                 s.shutdown(2)
                 break
             except:
