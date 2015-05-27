@@ -11,7 +11,7 @@ class ResourceTable:
     def __init__(self):
         # initialization
         self.records = []
-        # self.run()
+        self.run()
 
     def run(self):
         # excute once per second
@@ -40,13 +40,13 @@ class ResourceTable:
 """Write the test code here"""
 if __name__ == '__main__':
     resourceTable = ResourceTable()
-    resourceTable.add(Record('123456789012345678901234567890123456789012345678901234567890efgh', '111.10.10.11', 0))
+    resourceTable.add(Record(b'123456789012345678901234567890123456789012345678901234567890efgh', '111.10.10.11', 0))
     print (resourceTable.records[0].ttl)
     while resourceTable.records[0].ttl != 30:
         pass
     print (resourceTable.records[0].ttl)
     
-    resourceTable.add(Record('123456789012345678901234567890123456789012345678901234567890abcd', '127.0.0.1', 0))
+    resourceTable.add(Record(b'123456789012345678901234567890123456789012345678901234567890abcd', '127.0.0.1', 0))
     while len(resourceTable.records) != 1:
         pass
     print (len(resourceTable.records))
