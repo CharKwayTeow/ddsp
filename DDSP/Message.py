@@ -38,7 +38,7 @@ class Message:
         for i in range(0, self.header.length):
             self.records.append(struct.unpack("!64s", recordsData[64*i:64*(i+1)])[0])
 
-    def send(self, dst_ip = None, port = 8096):
+    def send(self, dst_ip = None, port = 8192):
         interface = netifaces.ifaddresses('eth0')
 
         # If the ip address is not specified, broadcast the message.
