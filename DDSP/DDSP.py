@@ -50,7 +50,7 @@ class DDSP:
                     # send an offer
                     offer = Offer()
                     offer.addRecord(record.fid)
-                    offer.send(ip_addr, self.port)
+                    offer.send(ip_addr)
                     break
 
         elif incomeMessage.header.type == MessageType.advertisement:
@@ -73,7 +73,7 @@ class DDSP:
                     # send a nack
                     nack = NACK()
                     nack.addRecord(incomeMessage.records[0])
-                    nack.send(ip_addr, self.port)
+                    nack.send(ip_addr)
                     return
             # update the resource table
             resourceTable.updateStatus(fid, RecordStatus.on_the_wire)
@@ -84,7 +84,7 @@ class DDSP:
             while rc != 0:
                 ack = ACK(receiver.port)
                 ack.addRecord(incomeMessage.records[0])
-                ack.send(ip_addr, self.port)
+                ack.send(ip_addr)
                 # start the receiver
                 rc = receiver.receive(self.data_directory + "/" + fid)
             # update resource table
@@ -126,7 +126,7 @@ class DDSP:
             if record.fid == fid:
                 query = Query()
                 query.addRecord(fid)
-                query.send(record.ip_addr, self.port)
+                query.send((record.ip_addr, self.port))
                 break
         discovery = Discovery()
         discovery.addRecord(fid)

@@ -43,7 +43,7 @@ class Message:
 
         # If the ip address is not specified, broadcast the message.
         if dst_ip == None:
-            dst_ip = interface[netifaces.AF_INET][0]['broadcast']
+            dst_ip = (interface[netifaces.AF_INET][0]['broadcast'], port)
 
         # Get the ip address of the interface
         src_ip = interface[netifaces.AF_INET][0]['addr']
@@ -56,7 +56,7 @@ class Message:
         s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         s.bind(('',port))
         s.settimeout(3)
-        s.sendto(data,(dst_ip, port))
+        s.sendto(data, dst_ip)
 
 
 """Write the test code here"""
@@ -76,6 +76,6 @@ if __name__ == '__main__':
     print (message.header.version)
     print (message.header.length)
     print (message.records)
-    message.send('222.222.222.222', 8096)
+    message.send(('222.222.222.222', 8096))
     message.send(None, 8096)
     print ("Message class should work if you see this")
