@@ -21,8 +21,9 @@ from DataSender import DataSender
 
 class DDSP:
     """docstring for DDSP"""
-    def __init__(self, data_directory = 'data', port = 8192):
+    def __init__(self, interface = 'eth0', data_directory = 'data', port = 8192):
         # initialization
+        self.interface = interface
         self.data_directory = data_directory
         self.port = port
         self.resourceTable = ResourceTable()
@@ -53,7 +54,7 @@ class DDSP:
                     # send an offer
                     offer = Offer()
                     offer.addRecord(record.fid)
-                    offer.send(ip_addr)
+                    offer.send(ip_addr, self.port, self.interface)
                     break
 
         elif incomeMessage.header.type == MessageType.advertisement:
@@ -76,7 +77,7 @@ class DDSP:
                     # send a nack
                     nack = NACK()
                     nack.addRecord(incomeMessage.records[0])
-                    nack.send(ip_addr)
+                    nack.send(ip_addr, self.port, self.interface)
                     return
             # update the resource table
             self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_wire)
@@ -87,7 +88,7 @@ class DDSP:
             while rc != 0:
                 ack = ACK(receiver.port)
                 ack.addRecord(incomeMessage.records[0])
-                ack.send(ip_addr)
+                ack.send(ip_addr, self.port, self.interface)
                 # start the receiver
                 rc = receiver.receive(self.data_directory + "/" + incomeMessage.records[0].decode(encoding='UTF-8'))
             # update resource table
@@ -114,7 +115,7 @@ class DDSP:
         self.resourceTable.records.append(record)
         advertisement = Advertisement()
         advertisement.addRecord(fid)
-        advertisement.send(None, self.port)
+        advertisement.send(None, self.port, self.interface)
 
     def removeContent(self, fid):
         for record in self.resourceTable.records:
@@ -122,18 +123,18 @@ class DDSP:
                 self.resourceTable.remove(record)
                 withdraw = Withdraw()
                 withdraw.addRecord(fid)
-                withdraw.send(None, self.port)
+                withdraw.send(None, self.port, self.interface)
 
     def requestContent(self, fid):
         for record in self.resourceTable.records:
             if record.fid == fid:
                 query = Query()
                 query.addRecord(fid)
-                query.send((record.ip_addr, self.port))
+                query.send((record.ip_addr, self.port), self.port, self.interface)
                 break
         discovery = Discovery()
         discovery.addRecord(fid)
-        discovery.send(None, self.port)
+        discovery.send(None, self.port, self.interface)
 
 """Write the test code here"""
 if __name__ == '__main__':
