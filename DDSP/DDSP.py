@@ -136,6 +136,17 @@ class DDSP:
         discovery.addRecord(fid)
         discovery.send(None, self.port, self.interface)
 
+    def getResourceTable():
+        result = []
+        for record in self.resourceTable:
+            record_dict = {}
+            record_dict['fid'] = record.fid
+            record_dict['ip_addr'] = record.ip_addr
+            record_dict['ttl'] = record.ttl
+            record_dict['status'] = record.status
+            result.append(record_dict)
+        return result
+
 """Write the test code here"""
 if __name__ == '__main__':
     ddsp = DDSP()
