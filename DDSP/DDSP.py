@@ -93,7 +93,7 @@ class DDSP:
             # update resource table
             self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_disk)
 
-        def handleAckMessage(self, incomeMessage, ip_addr):
+        def handleAckMessage(incomeMessage, ip_addr):
             # transfer data
             for record in self.resourceTable.records:
                 if record.fid == incomeMessage.records[0]:
