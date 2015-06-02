@@ -154,9 +154,9 @@ class DDSP:
         discovery.addRecord(fid)
         discovery.send(None, self.port, self.interface)
 
-    def getResourceTable():
+    def getResourceTable(self):
         result = []
-        for record in self.resourceTable:
+        for record in self.resourceTable.records:
             record_dict = {}
             record_dict['fid'] = record.fid
             record_dict['ip_addr'] = record.ip_addr

@@ -11,13 +11,11 @@ class DataReceiver:
         while True:
             self.port = random.randint(8192, 65535)
             try:
-                print (self.port)
                 # Detect whether the port has been occupied.
                 s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
                 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 s.bind(('', self.port))
                 s.close()
-                print ('success.')
                 return
             except:
                 # Do nothing here to repick another port
