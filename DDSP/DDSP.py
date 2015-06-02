@@ -39,15 +39,14 @@ class DDSP:
             data, ip_addr = s.recvfrom(1024)
             incomeMessage = Message()
             incomeMessage.decapsulate(data)
-            print (incomeMessage)
-            print (incomeMessage.header.type)
-            print (incomeMessage.header.length)
+            # print (incomeMessage.header.type)
+            # print (incomeMessage.header.length)
 
             # start a new thread to handle message
             _thread.start_new_thread(self.handleMessage, (incomeMessage, ip_addr))
 
     def handleMessage(self, incomeMessage, ip_addr):
-        if incomeMessage.header.type == MessageType.discovery or incomeMessage.header.type == MessageType.query:
+        def handleDiscoveryAndQueryMessage(incomeMessage, ip_addr):
             # check the resource table, if find the record, send an offer
             for record in self.resourceTable.records:
                 if record.status == 0 and record.fid == incomeMessage.records[0]:
@@ -57,20 +56,20 @@ class DDSP:
                     offer.send(ip_addr, self.port, self.interface)
                     break
 
-        elif incomeMessage.header.type == MessageType.advertisement:
+        def handleAdvertisementMessage(incomeMessage, ip_addr):
             # add a record to resource table
             record = Record(incomeMessage.records[0], ip_addr[0], RecordStatus.on_remote)
             self.resourceTable.records.append(record)
-            
-        elif incomeMessage.header.type == MessageType.withdraw:
+
+        def handleWithdrawMessage(incomeMessage, ip_addr):
             # delete a record in resource table
             for record in self.resourceTable.records:
-                if record.fid == incomeMessage.records[0]:
+                if record.fid == incomeMessage.records[0] and record.ip_addr == ip_addr:
                     # delete the record
                     self.resourceTable.remove(record)
                     break
-            
-        elif incomeMessage.header.type == MessageType.offer:
+
+        def handleOfferMessage(incomeMessage, ip_addr):
             # check the resource table, if not found, send a ack, else, send a nack
             for record in self.resourceTable.records:
                 if record.fid == incomeMessage.records[0] and record.status != RecordStatus.on_remote:
@@ -93,8 +92,8 @@ class DDSP:
                 rc = receiver.receive(self.data_directory + "/" + incomeMessage.records[0].decode(encoding='UTF-8'))
             # update resource table
             self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_disk)
-            
-        elif incomeMessage.header.type == MessageType.ack:
+
+        def handleAckMessage(self, incomeMessage, ip_addr):
             # transfer data
             for record in self.resourceTable.records:
                 if record.fid == incomeMessage.records[0]:
@@ -102,6 +101,25 @@ class DDSP:
                     sender = DataSender(ip_addr, incomeMessage.header.port)
                     sender.send(self.data_directory + "/" + record.fid.decode(encoding='UTF-8'))
                     break
+            
+        
+        if incomeMessage.header.version != 1:
+            return    
+        
+        if incomeMessage.header.type == MessageType.discovery or incomeMessage.header.type == MessageType.query:
+            handleDiscoveryAndQueryMessage(incomeMessage, ip_addr)
+
+        elif incomeMessage.header.type == MessageType.advertisement:
+            handleAdvertisementMessage(incomeMessage, ip_addr)
+            
+        elif incomeMessage.header.type == MessageType.withdraw:
+            handleWithdrawMessage(incomeMessage, ip_addr)
+            
+        elif incomeMessage.header.type == MessageType.offer:
+            handleOfferMessage(incomeMessage, ip_addr)
+
+        elif incomeMessage.header.type == MessageType.ack:
+            handleAckMessage(incomeMessage, ip_addr)
             
         elif incomeMessage.header.type == MessageType.nack:
             pass
