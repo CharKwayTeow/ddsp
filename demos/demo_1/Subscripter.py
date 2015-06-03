@@ -13,8 +13,8 @@ def query(stdscr):
     ip_pos = 68
     ttl_pos = 88
     status_pos = 96
+    i = 3
     while True:
-        i = 3
         for record_dict in ddsp.getResourceTable():
             if record_dict['ip_addr'] != '127.0.0.1':
                 interested = True
