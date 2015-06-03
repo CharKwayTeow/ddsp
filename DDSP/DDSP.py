@@ -158,10 +158,15 @@ class DDSP:
         result = []
         for record in self.resourceTable.records:
             record_dict = {}
-            record_dict['fid'] = record.fid
+            record_dict['fid'] = record.fid.decode('UTF-8')
             record_dict['ip_addr'] = record.ip_addr
-            record_dict['ttl'] = record.ttl
-            record_dict['status'] = record.status
+            record_dict['ttl'] = str(record.ttl)
+            if record.status == RecordStatus.on_the_disk:
+                record_dict['status'] = "On the disk"
+            elif record.status == RecordStatus.on_the_wire:
+                record_dict['status'] = "On the wire"
+            else:
+                record_dict['status'] = "On remote"
             result.append(record_dict)
         return result
 
