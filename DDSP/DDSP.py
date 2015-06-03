@@ -140,6 +140,14 @@ class DDSP:
         advertisement.addRecord(fid)
         advertisement.send(None, self.port, self.interface)
 
+    def addContents(self, fids):
+        advertisement = Advertisement()
+        for fid in fids:
+            record = Record(fid, '127.0.0.1', RecordStatus.on_the_disk)
+            self.resourceTable.records.append(record)
+            advertisement.addRecord(fid)
+        advertisement.send(None, self.port, self.interface)
+
     def removeContent(self, fid):
         for record in self.resourceTable.records:
             if record.fid == fid and record.ip_addr == '127.0.0.1':
@@ -147,6 +155,15 @@ class DDSP:
                 withdraw = Withdraw()
                 withdraw.addRecord(fid)
                 withdraw.send(None, self.port, self.interface)
+
+    def removeContents(self, fids):
+        withdraw = Withdraw()
+        for fid in fids:
+            for record in self.resourceTable.records:
+                if record.fid == fid and record.ip_addr == '127.0.0.1':
+                    self.resourceTable.remove(record)
+                    withdraw.addRecord(fid)
+        withdraw.send(None, self.port, self.interface)
 
     def requestContent(self, fid):
         for record in self.resourceTable.records:
@@ -158,6 +175,25 @@ class DDSP:
         discovery = Discovery()
         discovery.addRecord(fid)
         discovery.send(None, self.port, self.interface)
+
+    def requestContents(self, fids):
+        discovery = Discovery()
+        for fid in fids:
+            found = False
+            for record in self.resourceTable.records:
+                if record.fid == fid:
+                    # if found, send a query to the holder.
+                    query = Query()
+                    query.addRecord(fid)
+                    query.send((record.ip_addr, self.port), self.port, self.interface)
+                    found = True
+                    break
+            if not found:
+                # if not found, add a record in the discovery message
+                discovery.addRecord(fid)
+        if discovery.header.length != 0:
+            # if the discovery message is not empty, send the message.
+            discovery.send(None, self.port, self.interface)
 
     def getResourceTable(self):
         result = []
