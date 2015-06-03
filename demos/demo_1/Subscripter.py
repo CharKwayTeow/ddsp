@@ -28,6 +28,7 @@ def query(stdscr):
                     i += 1
                     stdscr.addstr(i, 0, " ")
                     stdscr.refresh()
+                    time.sleep(3)
 
 
 if __name__ == '__main__':

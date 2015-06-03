@@ -17,5 +17,6 @@ if __name__ == '__main__':
                 if interested:
                     ddsp.requestContent(record_dict['fid'].encode('utf-8'))
                     print (record_dict['fid'] + "\t" + record_dict['ip_addr'] + "\t" + record_dict['ttl'] + "\t" + record_dict['status'])
+                    time.sleep(3)
         
     os._exit(1)
