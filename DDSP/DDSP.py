@@ -79,7 +79,8 @@ class DDSP:
                     nack.send(ip_addr, self.port, self.interface)
                     break
             # update the resource table
-            self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_wire)
+            record = Record(incomeMessage.records[0], '127.0.0.1', RecordStatus.on_the_wire)
+            self.resourceTable.records.append(record)
             rc = -1
             while rc != 0:
                 # setup a data receiver
@@ -91,7 +92,8 @@ class DDSP:
                 # start the receiver
                 rc = receiver.receive(self.data_directory + "/" + incomeMessage.records[0].decode(encoding='UTF-8'))
             # update resource table
-            self.resourceTable.updateStatus(incomeMessage.records[0], RecordStatus.on_the_disk)
+            record = Record(incomeMessage.records[0], '127.0.0.1', RecordStatus.on_the_wire)
+            self.resourceTable.records.append(record)
 
         def handleAckMessage(incomeMessage, ip_addr):
             # transfer data

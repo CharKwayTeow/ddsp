@@ -15,8 +15,12 @@ def query(stdscr):
     status_pos = 96
     while True:
         i = 3
-        for record_dict in ddsp.getResourceTable():
-            if record_dict['ip_addr'] != '127.0.0.1':
+        for record_dict in ddsp.getResourceTable() if record_dict['ip_addr'] != '127.0.0.1':
+            interested = True
+            for duplicated in ddsp.getResourceTable() if duplicated['fid'] == record_dict['fid'] and duplicated['ip_addr'] == '127.0.0.1':
+                interested = False
+                break
+            if interested:
                 ddsp.requestContent(record_dict['fid'].encode('utf-8'))
                 stdscr.addstr(i, 0, "Requested for a File: " + record_dict['fid'])
                 i += 1
