@@ -95,7 +95,7 @@ class DDSP:
                 # start the receiver
                 rc = receiver.receive(self.data_directory + "/" + incomeMessage.records[0].decode(encoding='UTF-8'))
             # update resource table
-            record = Record(incomeMessage.records[0], '127.0.0.1', RecordStatus.on_the_wire)
+            record = Record(incomeMessage.records[0], '127.0.0.1', RecordStatus.on_the_disk)
             self.resourceTable.records.append(record)
 
         def handleAckMessage(incomeMessage, ip_addr):
