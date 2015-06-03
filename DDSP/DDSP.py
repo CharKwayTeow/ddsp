@@ -48,26 +48,29 @@ class DDSP:
     def handleMessage(self, incomeMessage, ip_addr):
         def handleDiscoveryAndQueryMessage(incomeMessage, ip_addr):
             # check the resource table, if find the record, send an offer
-            for record in self.resourceTable.records:
-                if record.status == 0 and record.fid == incomeMessage.records[0]:
-                    # send an offer
-                    offer = Offer()
-                    offer.addRecord(record.fid)
-                    offer.send(ip_addr, self.port, self.interface)
-                    break
+            for fid in incomeMessage.records:
+                for record in self.resourceTable.records:
+                    if record.status == 0 and record.fid == fid:
+                        # send an offer
+                        offer = Offer()
+                        offer.addRecord(record.fid)
+                        offer.send(ip_addr, self.port, self.interface)
+                        break
 
         def handleAdvertisementMessage(incomeMessage, ip_addr):
             # add a record to resource table
-            record = Record(incomeMessage.records[0], ip_addr[0], RecordStatus.on_remote)
-            self.resourceTable.records.append(record)
+            for fid in incomeMessage.records:
+                record = Record(fid, ip_addr[0], RecordStatus.on_remote)
+                self.resourceTable.records.append(record)
 
         def handleWithdrawMessage(incomeMessage, ip_addr):
             # delete a record in resource table
-            for record in self.resourceTable.records:
-                if record.fid == incomeMessage.records[0] and record.ip_addr == ip_addr:
-                    # delete the record
-                    self.resourceTable.remove(record)
-                    break
+            for fid in incomeMessage.records:
+                for record in self.resourceTable.records:
+                    if record.fid == fid and record.ip_addr == ip_addr[0]:
+                        # delete the record
+                        self.resourceTable.remove(record)
+                        break
 
         def handleOfferMessage(incomeMessage, ip_addr):
             # check the resource table, if not found, send a ack, else, send a nack
