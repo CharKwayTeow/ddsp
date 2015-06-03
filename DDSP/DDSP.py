@@ -139,7 +139,7 @@ class DDSP:
 
     def removeContent(self, fid):
         for record in self.resourceTable.records:
-            if record.fid == fid:
+            if record.fid == fid and record.ip_addr == '127.0.0.1':
                 self.resourceTable.remove(record)
                 withdraw = Withdraw()
                 withdraw.addRecord(fid)
