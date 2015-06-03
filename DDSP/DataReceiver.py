@@ -19,7 +19,6 @@ class DataReceiver:
                 return
             except:
                 # Do nothing here to repick another port
-                print("Unexpected error:", sys.exc_info()[0])
                 pass
 
     def receive(self, path):
