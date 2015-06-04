@@ -19,6 +19,7 @@ def updateScreen(stdscr, ddsp, monitor_only = False):
         stdscr.addstr(0, 10, "A Monitor Using the APIs of DDSP")
         stdscr.addstr(1, 0, "Press 'q' to quit.")
         if not monitor_only:
+            stdscr.addstr(0, 10, "A Replica Using the APIs of DDSP")
             stdscr.addstr(2, 0, "Press 'a' to generate a file and broadcast a advertisement.")
             stdscr.addstr(3, 0, "Press 'r' to withdraw a file and broadcast the message.")
             table_top = 5

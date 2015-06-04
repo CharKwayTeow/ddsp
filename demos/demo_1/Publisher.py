@@ -6,18 +6,8 @@ import random
 import hashlib
 sys.path.append('../../DDSP/')
 from DDSP import DDSP
-
-def generateFid():
-    return (hashlib.md5((''.join(chr(random.randint(32,126)) for _ in range(64))).encode('utf-8')).hexdigest() + hashlib.md5((''.join(chr(random.randint(32,126)) for _ in range(64))).encode('utf-8')).hexdigest()).encode('utf-8')
-
-def generateFile(data_directory):
-    fid = generateFid();
-    f = open(data_directory + '/' + fid.decode('utf-8'), 'wb')
-    data_size = random.randint(50000, 100000);
-    data = (''.join(chr(random.randint(32,126)) for _ in range(data_size))).encode('utf-8')
-    f.write(data)
-    f.close();
-    return fid
+sys.path.append('../')
+from DemoUtil import generateFile
 
 if __name__ == '__main__':
     ddsp = DDSP(sys.argv[1], sys.argv[2])
@@ -48,6 +38,7 @@ if __name__ == '__main__':
                     break
             stdscr.addstr(i, 0, " ")
         elif key == ord('q'):
+            stdscr.clear()
             curses.endwin()
             break
 
