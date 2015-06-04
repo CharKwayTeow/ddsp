@@ -134,6 +134,9 @@ class DDSP:
             pass
 
 
+    # This method accepts a byte array of fid as input.
+    # It will broadcast an advertisement message indicating that it hold the file.
+    # WARNING: It is the upper layer program's responsibility to ensure that the file exists.
     def addContent(self, fid):
         record = Record(fid, '127.0.0.1', RecordStatus.on_the_disk)
         self.resourceTable.records.append(record)
@@ -141,6 +144,10 @@ class DDSP:
         advertisement.addRecord(fid)
         advertisement.send(None, self.port, self.interface)
 
+    # This method is similar to addContent.
+    # The only difference is that it accepts a list of fids as input.
+    # It will broadcast an advertisement message indicating that it hold all the files on the list.
+    # WARNING: It is the upper layer program's responsibility to ensure that the file exists.
     def addContents(self, fids):
         advertisement = Advertisement()
         for fid in fids:
@@ -149,6 +156,9 @@ class DDSP:
             advertisement.addRecord(fid)
         advertisement.send(None, self.port, self.interface)
 
+    # This method accepts a byte array of fid as input.
+    # It will broadcast a withdraw message indicating that it no longer hold the file.
+    # WARNING: This method would not delete any file on the local disk.
     def removeContent(self, fid):
         for record in self.resourceTable.records:
             if record.fid == fid and record.ip_addr == '127.0.0.1':
@@ -157,6 +167,10 @@ class DDSP:
                 withdraw.addRecord(fid)
                 withdraw.send(None, self.port, self.interface)
 
+    # This method is similar to removeContent.
+    # The only difference is that it accepts a list of fids as input.
+    # It will broadcast a withdraw message indicating that it no longer hold all the files on the list.
+    # WARNING: This method would not delete any file on the local disk.
     def removeContents(self, fids):
         withdraw = Withdraw()
         for fid in fids:
@@ -166,6 +180,9 @@ class DDSP:
                     withdraw.addRecord(fid)
         withdraw.send(None, self.port, self.interface)
 
+    # This method accepts a byte array of fid as input.
+    # It will send a query or broadcast a withdraw message to request for the file.
+    # WARNING: This method would not guarantee the success of accessing file, please check the resource table.
     def requestContent(self, fid):
         for record in self.resourceTable.records:
             if record.fid == fid:
@@ -177,6 +194,10 @@ class DDSP:
         discovery.addRecord(fid)
         discovery.send(None, self.port, self.interface)
 
+    # This method is similar to removeContent.
+    # The only difference is that it accepts a list of fids as input.
+    # It will send some query or broadcast a withdraw message to request for all the files on the list.
+    # WARNING: This method would not guarantee the success of accessing file, please check the resource table.
     def requestContents(self, fids):
         discovery = Discovery()
         for fid in fids:
@@ -196,6 +217,9 @@ class DDSP:
             # if the discovery message is not empty, send the message.
             discovery.send(None, self.port, self.interface)
 
+    # This method will return a list containing all records in the resource table.
+    # Each record will be store in a dictionary.
+    # Each key in the dictionary is the name of the attribute, while the type of value is string.
     def getResourceTable(self):
         result = []
         for record in self.resourceTable.records:
