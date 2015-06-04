@@ -102,7 +102,7 @@ class DDSP:
         def handleAckMessage(incomeMessage, ip_addr):
             # transfer data
             for record in self.resourceTable.records:
-                if record.fid == incomeMessage.records[0]:
+                if record.fid == incomeMessage.records[0] and record.ip_addr == '127.0.0.1':
                     # establish a connection
                     sender = DataSender(ip_addr, incomeMessage.header.port)
                     sender.send(self.data_directory + "/" + record.fid.decode(encoding='UTF-8'))
