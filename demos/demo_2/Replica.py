@@ -16,7 +16,7 @@ from DemoUtil import generateFile
 if __name__ == '__main__':
     ddsp = DDSP(sys.argv[1], sys.argv[2])
     stdscr = curses.initscr()
-    _thread.start_new_thread(updateScreen, (stdscr, ddsp, 5))
+    _thread.start_new_thread(updateScreen, (stdscr, ddsp, False))
     _thread.start_new_thread(query, (stdscr, ddsp, True))
 
     while True:
@@ -36,6 +36,7 @@ if __name__ == '__main__':
                     break
             stdscr.addstr(4, 0, " ")
         elif key == ord('q'):
+            stdscr.clear()
             curses.endwin()
             break
 

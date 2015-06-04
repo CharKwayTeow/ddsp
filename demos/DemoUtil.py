@@ -8,15 +8,20 @@ import _thread
 sys.path.append('../../DDSP/')
 from DDSP import DDSP
 
-def updateScreen(stdscr, ddsp, table_top):
+def updateScreen(stdscr, ddsp, monitor_only = False):
     fid_pos = 0
     ip_pos = 68
     ttl_pos = 88
     status_pos = 96
+    table_top = 3
     while True:
         stdscr.clear()
         stdscr.addstr(0, 10, "A Monitor Using the APIs of DDSP")
         stdscr.addstr(1, 0, "Press 'q' to quit.")
+        if not monitor_only:
+            stdscr.addstr(2, 0, "Press 'a' to generate a file and broadcast a advertisement.")
+            stdscr.addstr(3, 0, "Press 'r' to withdraw a file and broadcast the message.")
+            table_top = 5
         stdscr.addstr(table_top, fid_pos, "FID")
         stdscr.addstr(table_top, ip_pos, "IP Address")
         stdscr.addstr(table_top, ttl_pos, "TTL")
