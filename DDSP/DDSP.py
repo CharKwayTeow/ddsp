@@ -4,6 +4,7 @@ import sys
 import struct
 import socket
 import _thread
+import netifaces
 from MessageType import MessageType
 from RecordStatus import RecordStatus
 from Record import Record
@@ -27,6 +28,7 @@ class DDSP:
         self.data_directory = data_directory
         self.port = port
         self.resourceTable = ResourceTable()
+        self.ip_addr = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr']
 
         # start a new thread to run the daemon function
         self.daemon = _thread.start_new_thread(self.run, ())
@@ -107,7 +109,7 @@ class DDSP:
                     break
             
         
-        if incomeMessage.header.version != 1:
+        if incomeMessage.header.version != 1 or ip_addr[0] == self.ip_addr:
             return    
         
         if incomeMessage.header.type == MessageType.discovery or incomeMessage.header.type == MessageType.query:
