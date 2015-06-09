@@ -21,6 +21,8 @@ class DataSender:
                 else:
                     f.close()
                     break
+        except:
+            pass
         finally:
             s.close()
 
