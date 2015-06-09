@@ -24,6 +24,10 @@ class ResourceTable:
                     self.remove(record)
 
     def add(self, record):
+        # if same record is already exist in the table, remove it.
+        for r in self.records:
+            if r.fid == record.fid and r.ip_addr == record.ip_addr and r.status == record.status:
+                self.records.remove(record)
         self.records.append(record)
 
     def remove(self, record):
