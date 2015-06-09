@@ -10,9 +10,9 @@ from DDSP import DDSP
 
 def updateScreen(stdscr, ddsp, monitor_only = False):
     fid_pos = 0
-    ip_pos = 68
-    ttl_pos = 88
-    status_pos = 96
+    ip_pos = 34
+    ttl_pos = 52
+    status_pos = 58
     table_top = 3
     while True:
         stdscr.clear()
@@ -37,7 +37,7 @@ def updateScreen(stdscr, ddsp, monitor_only = False):
         stdscr.refresh()
 
 def generateFid():
-    return (hashlib.md5((''.join(chr(random.randint(32,126)) for _ in range(64))).encode('utf-8')).hexdigest() + hashlib.md5((''.join(chr(random.randint(32,126)) for _ in range(64))).encode('utf-8')).hexdigest()).encode('utf-8')
+    return (hashlib.md5((''.join(chr(random.randint(32,126)) for _ in range(32))).encode('utf-8')).hexdigest()).encode('utf-8')
 
 def generateFile(data_directory):
     fid = generateFid();
@@ -49,10 +49,6 @@ def generateFile(data_directory):
     return fid
 
 def query(stdscr, ddsp, fixed_pos = False):
-    fid_pos = 0
-    ip_pos = 68
-    ttl_pos = 88
-    status_pos = 96
     i = 3
     while True:
         for record_dict in ddsp.getResourceTable():

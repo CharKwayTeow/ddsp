@@ -27,7 +27,7 @@ class Message:
     def encapsulate(self):
         data = self.header.encapsulate()
         for fid in self.records:
-            data += struct.pack("!64s", fid)
+            data += struct.pack("!32s", fid)
         return data
 
     def decapsulate(self, data):
@@ -36,7 +36,7 @@ class Message:
         # decapsulate each fid
         recordsData = data[6:]
         for i in range(0, self.header.length):
-            self.records.append(struct.unpack("!64s", recordsData[64*i:64*(i+1)])[0])
+            self.records.append(struct.unpack("!32s", recordsData[64*i:64*(i+1)])[0])
 
     def send(self, dst_ip = None, port = 8192, interface = 'eth0'):
         ifconfig = netifaces.ifaddresses(interface)
